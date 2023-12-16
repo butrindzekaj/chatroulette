@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content={get_csrf_token()} />
+    <.live_title suffix=" Â· Phoenix Framework">
+      <%= assigns[:page_title] || "Dschatroulette" %>
+    </.live_title>
+    <link phx-track-static rel="stylesheet" href={~p"/assets/app.css"} />
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/app.js"}>
+    </script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+    @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+:root {
+  --grey-1: #2a2a2b;
+  --grey-2: #494848;
+  --grey-3: #131312;
+  --grey-4: #333334;
+  --grey-5: #bbb;
+  --color-1: #64af50; /*#1F09AC*/
+  --font-1: "Roboto", sans-serif;
+}
+
+body {
+  margin: 0px;
+  overflow: hidden;
+}
+
+.container {
+  display: grid;
+  grid-template-rows: 100vh;
+}
+
+/*======= Side Nav ==========*/
+
+.side-nav {
+  background: var(--grey-3);
+  color: white;
+  font-size: 25px;
+  text-align: center;
+  height: 100%;
+  z-index: 2;
+}
+
+.side-nav .profile img {
+  margin-top: 15px;
+  width: auto;
+  height: 60px;
+  filter: grayscale(1);
+  border-radius: 50%;
+}
+
+.icon-container {
+  line-height: 60px;
+  height: 60px;
+}
+
+.icon-container:hover {
+  background: var(--grey-2);
+}
+
+.icon-container + .active {
+  border-left: 8px solid var(--color-1);
+}
+
+.top-nav {
+  border-bottom: 1px solid grey;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+
+.top-nav .logo {
+  text-align: center;
+  font-size: 150%;
+  font-weight: bold;
+  font-family: "Roboto", sans-serif;
+  color: var(--color-1);
+}
+
+.top-nav .home {
+  color: var(--color-1);
+}
+
+.main-view {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 8vh 92vh;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 100%;
+}
+
+/*======== Chat Part ===========*/
+
+.chat {
+  display: grid;
+  grid-template-rows: 8vh 72vh 20vh;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+/*========= Top Nav ============*/
+
+.chat .top {
+  font-family: "Roboto", sans-serif;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+}
+
+.chat .top .open-message {
+  padding: 0 10px;
+  color: var(--grey-3);
+  display: none;
+}
+
+@media screen and (max-width: 640px) {
+  .chat .top .open-message {
+    display: block;
+  }
+}
+
+.chat .top .open-message:hover {
+  color: var(--color-1);
+  transition: color ease 0.5s;
+}
+
+.chat .top .name {
+  font-size: 20px;
+  font-weight: 600;
+  color: grey;
+  margin-left: 10px;
+  width: 200px;
+  cursor: pointer;
+}
+
+.chat .top .name:hover {
+  color: var(--color-1);
+  transition: color ease 0.5s;
+}
+
+/*======== Chat Message Container =====*/
+
+.chat .message-container {
+  height: 96%;
+  padding-right: 18px;
+  box-sizing: content-box;
+  padding: 0 2rem;
+  overflow-y: scroll;
+}
+
+.chat .divider {
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: var(--grey-5);
+  font-family: var(--font-1);
+  text-align: center;
+  position: relative;
+  display: inline-block;
+}
+
+.chat .divider span {
+  background: white;
+  padding: 0px 10px;
+}
+
+.chat .divider:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  height: 1px;
+  width: 100%;
+  background: var(--grey-5);
+  z-index: -1;
+}
+
+.chat .comment {
+  min-height: 50px;
+  width: 100%;
+  float: left;
+  margin: 5px 0px;
+  text-align: left;
+}
+
+.chat .me {
+  float: right;
+  text-align: right;
+}
+
+.chat .comment img {
+  filter: grayscale(1);
+  height: 50px;
+  width: auto;
+  border-radius: 50%;
+  float: left;
+}
+
+.chat .me img {
+  float: right;
+}
+
+.chat .bubble {
+  display: inline-block;
+  background: var(--color-1);
+  padding: 8px 12px;
+  border-radius: 8px;
+  color: white;
+  font-family: var(--font-1);
+  max-width: 55%;
+  position: relative;
+  margin: 0px 15px;
+}
+
+.chat .me .bubble {
+  background: var(--grey-5);
+  text-align: left;
+}
+
+.chat .other .bubble:before {
+  content: "";
+  top: 0px;
+  left: -25px;
+  position: absolute;
+  background: transparent;
+  height: 0px;
+  width: 0px;
+  border-left: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-right: 20px solid var(--color-1);
+}
+
+.chat .me .bubble:after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: -25px;
+  background: transparent;
+  height: 0px;
+  width: 0px;
+  border-right: 15px solid transparent;
+  border-bottom: 15px solid transparent;
+  border-left: 20px solid var(--grey-5);
+}
+
+.chat .bubble img {
+  border-radius: 5px;
+  height: 200px;
+  width: auto;
+  filter: none;
+}
+
+.chat .bubble a {
+  color: white;
+}
+
+/*======== Typing part =========*/
+
+.chat .input-container {
+  display: grid;
+  height: fit-content;
+  grid-template-columns: auto 8vh;
+  padding: 0 2rem;
+  padding-top: 22px;
+  border-top: 1px solid #ccc;
+  align-items: center;
+}
+
+.chat .textarea-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.chat textarea {
+  outline: none;
+  font-size: 16px;
+  font-family: "Roboto", sans-serif;
+  resize: none;
+  overflow-y: auto;
+  width: 93%;
+  box-sizing: content-box;
+  padding: 1rem;
+  margin-left: 10px;
+  border: 1px solid black;
+  border-radius: 0.5rem;
+}
+
+.chat .send {
+  border: none;
+  cursor: pointer;
+  background: var(--color-1);
+  color: white;
+  font-size: 20px;
+  height: 8vh;
+  width: 8vh;
+  border-radius: 50%;
+  max-height: 60px;
+  max-width: 60px;
+}
+/*======= Contact List =======*/
+
+.contact-detail {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 300px;
+  height: 100%;
+  background: #eee;
+  display: none;
+  font-family: "Roboto", sans-serif;
+  padding: 0px 10px;
+  overflow-y: scroll;
+}
+
+.close {
+  font-size: 20px;
+  border: none;
+  background: transparent;
+}
+
+.contact-detail img {
+  width: 70%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  filter: grayscale(0);
+  border-radius: 50%;
+}
+
+.contact-detail h3 {
+  color: var(--grey-2);
+  text-align: center;
+  margin: 8px 0px;
+  font-size: 22px;
+}
+
+.contact-detail .bio {
+  text-align: center;
+}
+
+.contact-detail ul {
+  margin: 0px;
+  margin-top: 10px;
+  padding: 0px;
+}
+
+.contact-detail ul li {
+  list-style: none;
+  width: 100%;
+  background: white;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  padding: 10px 0px;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.contact-detail ul li .contact-img {
+  border-radius: none;
+  height: auto;
+  width: 55px;
+  margin: 0 10px;
+  display: inline-block;
+  filter: grayscale(1);
+}
+
+.contact-list ul li .name {
+  display: inline-block;
+}
+
+.button {
+  outline: none;
+  border: none;
+  width: 170px;
+  cursor: pointer;
+  background-color: var(--color-1);
+  border-radius: 0.5rem;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.8rem;
+  text-align: center;
+}
+
+.chat-list .chat {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 1rem;
+  height: min-content;
+  border: 1px dashed;
+}
+
+.chat-list .chat .title {
+  font-size: 39px;
+  font-weight: bold;
+}
+
+.chat-list .chat .actions {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+}
+
+.chat-list .chat-btn {
+  border: none;
+  cursor: pointer;
+  background: var(--color-1);
+  color: white;
+  font-size: 16px;
+  height: 5vh;
+  width: 5vh;
+  border-radius: 50%;
+  max-height: 60px;
+  max-width: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+    </style>
+    <title>Chat room</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="main-view">
+        <div class="top-nav">
+          <div class="logo">Room #5</div>
+          <div class="home">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </div>
+        </div>
+        <div class="content">
+          <%= @inner_content %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
