@@ -2,11 +2,11 @@ import Config
 
 # Configure your database
 config :chatroulette, Chatroulette.Repo,
-  username: "admin",
-  password: "password",
-  hostname: "57.129.34.14",
+  username: "avnadmin",
+  password: "8D4c3NxCnl0hB5ksYwZU",
+  hostname: "postgresql-dda53e2d-odfdc6513.database.cloud.ovh.net",
   database: "postgres",
-  port: 5432,
+  port: 20184,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

@@ -6,9 +6,11 @@ import Config
 # to provide built-in test partitioning in CI environment.
 # Run `mix help test` for more information.
 config :chatroulette, Chatroulette.Repo,
-  username: "admin",
-  password: "password",
-  hostname: "57.129.34.14",
+  username: "avnadmin",
+  password: "8D4c3NxCnl0hB5ksYwZU",
+  hostname: "postgresql-dda53e2d-odfdc6513.database.cloud.ovh.net",
+  database: "postgres",
+  port: 20184,
   database: "chatroulette_test#{System.get_env("MIX_TEST_PARTITION")}",
   port: 5432,
   pool: Ecto.Adapters.SQL.Sandbox,
