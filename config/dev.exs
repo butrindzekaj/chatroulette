@@ -2,11 +2,11 @@ import Config
 
 # Configure your database
 config :chatroulette, Chatroulette.Repo,
-  username: "avnadmin",
-  password: "8D4c3NxCnl0hB5ksYwZU",
-  hostname: "postgresql-dda53e2d-odfdc6513.database.cloud.ovh.net",
-  database: "postgres",
-  port: 20184,
+  username: "postgres",
+  password: System.get_env("DB_PASSWORD") || "localhost",
+  database: "app_test#{System.get_env("MIX_TEST_PARTITION")}",
+  hostname: System.get_env("DB_HOST") || "localhost",
+  pool: Ecto.Adapters.SQL.Sandbox,
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
