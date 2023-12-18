@@ -31,6 +31,7 @@ jobs:
         with:
           elixir-version: "1.15.3"
           otp-version: "26.0"
+      - run: sudo apt-get install esl-erlang
       - run: mix deps.get
       - run: mix deps.compile
       - run: cd assets && yarn install --frozen-lockfile
