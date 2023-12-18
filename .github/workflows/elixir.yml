@@ -12,7 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     container: node:10.18-jessie
     env:
-      LC_ALL: en_US.UTF-8
+      LC_ALL: C.UTF-8
+      LANG: C.UTF-8
     services:
       postgres:
         image: postgres:12
